@@ -21,6 +21,10 @@ locals {
     creator_label = var.creator_label
     workspace     = terraform.workspace
   })
+  app-of-apps = templatefile("${path.module}/templates/app-of-apps.tftpl", {
+    targetRevision = terraform.workspace
+    thisRepoURL    = var.github_repo_url
+  })
   apps-external-secrets = templatefile("${path.module}/templates/apps/external-secrets.tftpl", {
     eso_version    = var.eso_version
     targetRevision = terraform.workspace
@@ -90,6 +94,15 @@ resource "github_repository_file" "addons_pacman_backup" {
 }
 
 # Apps files
+resource "github_repository_file" "app_of_apps" {
+  count               = (var.argocd_deployment) ? 1 : 0
+  repository          = var.github_repo
+  branch              = terraform.workspace
+  file                = "gcp/argocd/app-of-apps.yaml"
+  content             = format("# Auto-generated file, do not edit directly\n%s", local.app-of-apps)
+  commit_message      = "automated(${terraform.workspace}): update app-of-apps.yaml via 'terraform apply/destroy'"
+  overwrite_on_create = true
+}
 resource "github_repository_file" "apps_external_secrets" {
   count               = (var.argocd_deployment) ? 1 : 0
   repository          = var.github_repo

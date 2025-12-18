@@ -9,8 +9,8 @@ spec:
     server: https://kubernetes.default.svc
   source:
     path: gcp/argocd/apps
-    repoURL: https://github.com/MichaelHaigh/kasten-automation
-    targetRevision: argocd-setup # change to main when merging to main
+    repoURL: ${thisRepoURL}
+    targetRevision: ${targetRevision}
     directory:
       recurse: true
   sources: []
