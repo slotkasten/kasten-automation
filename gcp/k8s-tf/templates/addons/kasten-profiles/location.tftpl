@@ -1,0 +1,20 @@
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Profile
+metadata:
+  name: ${creator_label}-${workspace}-gcp-location
+  namespace: kasten-io
+spec:
+  locationSpec:
+    credential:
+      secret:
+        apiVersion: v1
+        kind: secret
+        name: k10secret-gcp-sa-key
+        namespace: kasten-io
+      secretType: GcpServiceAccountKey
+    objectStore:
+      name: ${bucket}
+      objectStoreType: GCS
+      region: ${region}
+    type: ObjectStore
+  type: Location

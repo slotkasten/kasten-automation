@@ -1,0 +1,16 @@
+kind: Profile
+apiVersion: config.kio.kasten.io/v1alpha1
+metadata:
+  name: ${creator_label}-${workspace}-gcp-infra
+  namespace: kasten-io
+spec:
+  infra:
+    credential:
+      secretType: GcpServiceAccountKey
+      secret:
+        apiVersion: v1
+        kind: secret
+        name: k10secret-gcp-sa-key
+        namespace: kasten-io
+    type: GCP
+  type: Infra

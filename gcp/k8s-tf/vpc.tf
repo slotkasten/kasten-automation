@@ -1,41 +1,41 @@
 # VPC Config
 resource "google_compute_network" "gke_network" {
-  name                    = "gke-${terraform.workspace}-network"
+  name                    = "${var.creator_label}-${terraform.workspace}-network"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "gke_subnetwork" {
-  name          = "gke-${terraform.workspace}-subnetwork"
+  name          = "${var.creator_label}-${terraform.workspace}-subnetwork"
   ip_cidr_range = var.gke_subnetwork_cidr
   network       = google_compute_network.gke_network.name
   secondary_ip_range {
-    range_name    = "gke-${terraform.workspace}-subnetwork-pods"
+    range_name    = "${var.creator_label}-${terraform.workspace}-subnetwork-pods"
     ip_cidr_range = var.gke_ip_range_pods
   }
   secondary_ip_range {
-    range_name    = "gke-${terraform.workspace}-subnetwork-services"
+    range_name    = "${var.creator_label}-${terraform.workspace}-subnetwork-services"
     ip_cidr_range = var.gke_ip_range_services
   }
 }
 
 resource "google_compute_firewall" "gke_firewall" {
-  name          = "gke-${terraform.workspace}-firewall"
+  name          = "${var.creator_label}-${terraform.workspace}-firewall"
   network       = google_compute_network.gke_network.name
   source_ranges = var.gke_private_cluster ? var.authorized_networks[*].cidr_block : ["0.0.0.0/0"]
-  source_tags   = var.gke_private_cluster ? ["gke-${terraform.workspace}-cluster"] : []
+  source_tags   = var.gke_private_cluster ? ["${var.creator_label}-${terraform.workspace}-cluster"] : []
   allow {
     protocol = "all"
   }
 }
 
 resource "google_compute_router" "gke_router" {
-  name    = "gke-${terraform.workspace}-router"
+  name    = "${var.creator_label}-${terraform.workspace}-router"
   region  = var.gcp_region
   network = google_compute_network.gke_network.id
 }
 
 resource "google_compute_router_nat" "gke_nat" {
-  name                               = "gke-${terraform.workspace}-router-nat"
+  name                               = "${var.creator_label}-${terraform.workspace}-router-nat"
   router                             = google_compute_router.gke_router.name
   region                             = google_compute_router.gke_router.region
   nat_ip_allocate_option             = "AUTO_ONLY"

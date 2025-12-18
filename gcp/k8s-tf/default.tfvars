@@ -1,5 +1,12 @@
+# GitHub Settings
+github_owner      = "MichaelHaigh"
+github_repo       = "kasten-automation"
+github_repo_url   = "https://github.com/MichaelHaigh/kasten-automation.git"
+github_repo_token = "~/.github/kasten-automation"
+
 # GCP Settings
 sa_creds           = "~/.gcp/mhaigh-terraform-1a95c215426d.json"
+k10_sa_creds       = "~/.gcp/k10-mhaigh-sa-key.json"
 gcp_sa             = "mhaigh-terraform@rich-access-174020.iam.gserviceaccount.com"
 gcp_project        = "rich-access-174020"
 gcp_project_number = "215900857647"
@@ -36,6 +43,9 @@ authorized_networks = [
   },
 ]
 
-# ArgoCD Settings
-argocd_namespace = "argocd"
-argocd_version   = "9.1.6"
+# ArgoCD / Deployed Apps Settings
+argocd_deployment = true
+argocd_version    = "9.1.6"  # Only relevant if argocd_deployment is true
+eso_version       = "1.1.1"  # Only relevant if argocd_deployment is true
+kasten_version    = "8.0.14" # Only relevant if argocd_deployment is true
+pacman_version    = "0.1.23" # Only relevant if argocd_deployment is true

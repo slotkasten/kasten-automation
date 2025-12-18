@@ -5,7 +5,7 @@ module "gke" {
 
   source                  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
   project_id              = var.gcp_project
-  name                    = "gke-${terraform.workspace}-${var.creator_label}"
+  name                    = "${var.creator_label}-${terraform.workspace}-gke"
   regional                = false
   region                  = var.gcp_region
   zones                   = var.gcp_zones
