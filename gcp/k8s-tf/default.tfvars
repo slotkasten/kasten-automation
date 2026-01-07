@@ -48,4 +48,4 @@ argocd_deployment = true
 argocd_version    = "9.1.6"  # Only relevant if argocd_deployment is true
 eso_version       = "1.1.1"  # Only relevant if argocd_deployment is true
 kasten_version    = "8.0.14" # Only relevant if argocd_deployment is true
-pacman_version    = "0.1.23" # Only relevant if argocd_deployment is true
+pacman_version    = "0.1.24" # Only relevant if argocd_deployment is true
