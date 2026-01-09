@@ -1,0 +1,19 @@
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Profile
+metadata:
+  name: ${creator}-${workspace}-azure-location
+  namespace: kasten-io
+spec:
+  locationSpec:
+    credential:
+      secret:
+        apiVersion: v1
+        kind: secret
+        name: k10secret-${creator}-${workspace}-azurekv
+        namespace: kasten-io
+      secretType: AzStorageAccount
+    objectStore:
+      name: ${container}
+      objectStoreType: AZ
+    type: ObjectStore
+  type: Location

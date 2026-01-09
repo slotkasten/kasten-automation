@@ -1,7 +1,8 @@
 # Kasten Automation
 
-This repository contains Terraform code which creates hyperscaler Kubernetes-as-a-Service offerings (additional clouds will be added in the future):
+This repository contains Terraform code which creates hyperscaler Kubernetes-as-a-Service offerings (AWS will be added in the future):
 
+* [Azure Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/products/kubernetes-service)
 * [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine)
 
 In addition to deploying Kubernetes, the Terraform IaC will optionally install ArgoCD, which is then used to bootstrap the cluster by:
