@@ -25,7 +25,7 @@ There are two main credentials which are required:
     }
     ```
   * `subscription_id`: the Azure [subscription ID](https://learn.microsoft.com/en-us/azure/azure-portal/get-subscription-tenant-id#find-your-azure-subscription) used to deploy resources (run `az account show --query id --output tsv`)
-  * `tentant_id`: the Azure [tentant ID](https://learn.microsoft.com/en-us/azure/azure-portal/get-subscription-tenant-id#find-your-microsoft-entra-tenant) (run `az account show --query tenantId --output tsv`)
+  * `tenant_id`: the Azure [tenant ID](https://learn.microsoft.com/en-us/azure/azure-portal/get-subscription-tenant-id#find-your-microsoft-entra-tenant) (run `az account show --query tenantId --output tsv`)
   * `user_id`: the ID of the currently logged in user (run ``az ad user show --id `az account show --query user.name --output tsv` --query id --output tsv``)
 * `github_repo_token`: a local file which contains a [fine-grained token](https://github.blog/security/application-security/introducing-fine-grained-personal-access-tokens-for-github/) for your GitHub account:
   * Optionally (but recommended) constrained to your `kasten-automation` repository

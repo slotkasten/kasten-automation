@@ -6,6 +6,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   kubernetes_version                  = var.aks_kubernetes_version
   private_cluster_enabled             = false
   private_cluster_public_fqdn_enabled = false
+  azure_policy_enabled                = false
 
   api_server_access_profile {
     authorized_ip_ranges = var.authorized_networks[*].cidr_block

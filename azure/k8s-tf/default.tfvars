@@ -40,5 +40,5 @@ authorized_networks = [
 argocd_deployment = true
 argocd_version    = "9.1.6"  # Only relevant if argocd_deployment is true
 eso_version       = "1.1.1"  # Only relevant if argocd_deployment is true
-kasten_version    = "8.0.15" # Only relevant if argocd_deployment is true
-pacman_version    = "0.1.24" # Only relevant if argocd_deployment is true
+kasten_version    = "8.5.1"  # Only relevant if argocd_deployment is true
+pacman_version    = "0.1.26" # Only relevant if argocd_deployment is true

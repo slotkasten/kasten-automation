@@ -1,0 +1,14 @@
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Profile
+metadata:
+  name: ${creator}-${workspace}-azure-infra
+  namespace: kasten-io
+spec:
+  infra:
+    type: Azure
+    azure:
+      subscriptionID: "${subscriptionID}"
+      resourceGroup: ${resourceGroup}
+      cloudEnv: AzurePublicCloud
+      useDefaultMSI: true
+  type: Infra
