@@ -2,8 +2,8 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: "-3"
-  name: kasten-profiles
+    argocd.argoproj.io/sync-wave: "-1"
+  name: kasten-dr
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -15,7 +15,7 @@ spec:
   source:
     repoURL: ${thisRepoURL}
     targetRevision: ${targetRevision}
-    path: azure/argocd/addons/kasten-profiles
+    path: azure/argocd/addons/kasten-dr
   syncPolicy:
     automated:
       prune: true

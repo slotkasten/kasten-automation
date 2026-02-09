@@ -8,11 +8,11 @@ locals {
     creator   = var.creator_tag
     workspace = terraform.workspace
   })
-  addons-kasten-dr = templatefile("${path.module}/templates/addons/kasten-profiles/kasten-dr.tftpl", {
+  addons-kasten-dr-policy = templatefile("${path.module}/templates/addons/kasten-dr/dr-policy.tftpl", {
     creator   = var.creator_tag
     workspace = terraform.workspace
   })
-  addons-kasten-dr-secret = templatefile("${path.module}/templates/addons/kasten-profiles/kasten-dr-secret.tftpl", {
+  addons-kasten-dr-secret = templatefile("${path.module}/templates/addons/kasten-dr/dr-secret.tftpl", {
     creator   = var.creator_tag
     workspace = terraform.workspace
   })
@@ -46,6 +46,10 @@ locals {
     thisRepoURL    = var.github_repo_url
   })
   apps-kasten-profiles = templatefile("${path.module}/templates/apps/kasten-profiles.tftpl", {
+    targetRevision = terraform.workspace
+    thisRepoURL    = var.github_repo_url
+  })
+  apps-kasten-dr = templatefile("${path.module}/templates/apps/kasten-dr.tftpl", {
     targetRevision = terraform.workspace
     thisRepoURL    = var.github_repo_url
   })
@@ -84,22 +88,22 @@ resource "github_repository_file" "addons_kastenprofiles_infrastructure" {
   commit_message      = "automated(${terraform.workspace}): update addons/kasten-profiles/infrastructure.yaml via 'terraform apply/destroy'"
   overwrite_on_create = true
 }
-resource "github_repository_file" "addons_kastenprofiles_kastendr" {
+resource "github_repository_file" "addons_kastendr_policy" {
   count               = (var.argocd_deployment) ? 1 : 0
   repository          = var.github_repo
   branch              = terraform.workspace
-  file                = "azure/argocd/addons/kasten-profiles/kasten-dr.yaml"
-  content             = format("# Auto-generated file, do not edit directly\n%s", local.addons-kasten-dr)
-  commit_message      = "automated(${terraform.workspace}): update addons/kasten-profiles/kasten-dr.yaml via 'terraform apply/destroy'"
+  file                = "azure/argocd/addons/kasten-dr/dr-policy.yaml"
+  content             = format("# Auto-generated file, do not edit directly\n%s", local.addons-kasten-dr-policy)
+  commit_message      = "automated(${terraform.workspace}): update addons/kasten-dr/dr-policy.yaml via 'terraform apply/destroy'"
   overwrite_on_create = true
 }
-resource "github_repository_file" "addons_kastenprofiles_kastendrsecret" {
+resource "github_repository_file" "addons_kastendr_secret" {
   count               = (var.argocd_deployment) ? 1 : 0
   repository          = var.github_repo
   branch              = terraform.workspace
-  file                = "azure/argocd/addons/kasten-profiles/kasten-dr-secret.yaml"
+  file                = "azure/argocd/addons/kasten-dr/dr-secret.yaml"
   content             = format("# Auto-generated file, do not edit directly\n%s", local.addons-kasten-dr-secret)
-  commit_message      = "automated(${terraform.workspace}): update addons/kasten-profiles/kasten-dr-secret.yaml via 'terraform apply/destroy'"
+  commit_message      = "automated(${terraform.workspace}): update addons/kasten-dr/dr-secret.yaml via 'terraform apply/destroy'"
   overwrite_on_create = true
 }
 resource "github_repository_file" "addons_kastenprofiles_location" {
@@ -156,6 +160,15 @@ resource "github_repository_file" "apps_kasten_profiles" {
   file                = "azure/argocd/apps/kasten-profiles.yaml"
   content             = format("# Auto-generated file, do not edit directly\n%s", local.apps-kasten-profiles)
   commit_message      = "automated(${terraform.workspace}): update apps/kasten-profiles.yaml via 'terraform apply/destroy'"
+  overwrite_on_create = true
+}
+resource "github_repository_file" "apps_kasten_dr" {
+  count               = (var.argocd_deployment) ? 1 : 0
+  repository          = var.github_repo
+  branch              = terraform.workspace
+  file                = "azure/argocd/apps/kasten-dr.yaml"
+  content             = format("# Auto-generated file, do not edit directly\n%s", local.apps-kasten-dr)
+  commit_message      = "automated(${terraform.workspace}): update apps/kasten-dr.yaml via 'terraform apply/destroy'"
   overwrite_on_create = true
 }
 resource "github_repository_file" "apps_pacman" {
