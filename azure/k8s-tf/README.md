@@ -30,7 +30,7 @@ There are two main credentials which are required:
 * `github_repo_token`: a local file which contains a [fine-grained token](https://github.blog/security/application-security/introducing-fine-grained-personal-access-tokens-for-github/) for your GitHub account:
   * Optionally (but recommended) constrained to your `kasten-automation` repository
   * **Read** access to metadata
-  * **Read** and **Write** access to code
+  * **Read** and **Write** access to code (also referred to as 'content')
 
 ## Other Settings
 

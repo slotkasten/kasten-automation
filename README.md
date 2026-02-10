@@ -2,8 +2,8 @@
 
 This repository contains Terraform code which creates hyperscaler Kubernetes-as-a-Service offerings (AWS will be added in the future):
 
-* [Azure Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/products/kubernetes-service)
-* [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine)
+* [Azure Kubernetes Service (AKS)](./azure/k8s-tf)
+* [Google Kubernetes Engine (GKE)](./gcp/k8s-tf)
 
 In addition to deploying Kubernetes, the Terraform IaC will optionally install ArgoCD, which is then used to bootstrap the cluster by:
 
@@ -15,7 +15,7 @@ In addition to deploying Kubernetes, the Terraform IaC will optionally install A
 
 ## Getting Started
 
-This repository *must* be forked, as `git push` privileges are required for automated Terraform commits. Then change into the hyperscaler directory of your choice, and initialize terraform:
+This repository *must* be forked, as `git push` privileges are required for automated Terraform commits. Then change into the `k8s-tf` directory of the hyperscaler of your choice, and initialize terraform:
 
 ```text
 terraform init

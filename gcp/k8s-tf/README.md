@@ -18,7 +18,7 @@ There are three main credentials which are required:
 * `github_repo_token`: a local file which contains a [fine-grained token](https://github.blog/security/application-security/introducing-fine-grained-personal-access-tokens-for-github/) for your GitHub account:
   * Optionally (but recommended) constrained to your `kasten-automation` repository
   * **Read** access to metadata
-  * **Read** and **Write** access to code
+  * **Read** and **Write** access to code (also referred to as 'content')
 * `sa_creds`: a local file to the [service account credential](https://cloud.google.com/iam/docs/service-account-creds#key-types) which is used to deploy Terraform resources with the following permissions:
   * roles/compute.admin
   * roles/compute.securityAdmin
