@@ -1,0 +1,23 @@
+# Auto-generated file, do not edit directly
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps
+  namespace: argocd
+spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  source:
+    path: azure/argocd/apps
+    repoURL: https://github.com/slotkasten/kasten-automation.git
+    targetRevision: kasten65az
+    directory:
+      recurse: true
+  sources: []
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      enabled: true
