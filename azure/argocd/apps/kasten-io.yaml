@@ -1,0 +1,43 @@
+# Auto-generated file, do not edit directly
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
+  name: kasten-io
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: kasten-io
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - repoURL: https://charts.kasten.io/
+      targetRevision: 6.5.14
+      chart: k10
+      helm:
+        releaseName: k10
+        valuesObject:
+          auth:
+            tokenAuth:
+              enabled: true
+          azure:
+            useDefaultMSI: true
+          excludedApps:
+            - kube-node-lease
+            - kube-public
+            - kube-system
+          externalGateway:
+            create: true
+    - repoURL: https://github.com/slotkasten/kasten-automation.git
+      targetRevision: kasten65az
+      path: azure/argocd/addons/kasten-io
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    automated:
+      prune: true
+      selfHeal: true
