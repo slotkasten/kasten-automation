@@ -31,6 +31,10 @@ spec:
             - kube-system
           externalGateway:
             create: true
+          eula:
+            accept: true
+            company: "Veeam Software"
+            email: "matt.slotten@veeam.com"
     - repoURL: https://github.com/slotkasten/kasten-automation.git
       targetRevision: kasten65az
       path: azure/argocd/addons/kasten-io
