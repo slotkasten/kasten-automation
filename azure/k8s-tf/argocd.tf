@@ -21,6 +21,11 @@ resource "helm_release" "argocd" {
     {
       name  = "server.ingress.enabled"
       value = "false"
+    },
+    {
+      name  = "configs.params.controller\\.sync\\.wave\\.delay\\.seconds"
+      value = "15"
+      type  = "string"
     }
   ]
 
