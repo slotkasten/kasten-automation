@@ -24,6 +24,13 @@ spec:
     - repoURL: ${thisRepoURL}
       targetRevision: ${targetRevision}
       path: azure/argocd/addons/pacman
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      name: pacman-mongodb
+      namespace: pacman
+      jsonPointers:
+        - /data
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
