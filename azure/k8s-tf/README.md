@@ -7,14 +7,14 @@ This Terraform code deploys:
 * [blob.tf](./blob.tf): an Azure storage account and blob container which is used for application backups via Kasten.
 * [github.tf](./github.tf): if `var.argocd_deployment` is set to `true`, dynamic ArgoCD application and addon YAML specification files are created which are then committed to git using the [Terraform GitHub Provider](https://registry.terraform.io/providers/integrations/github/latest).
 * [main.tf](./main.tf): required provider versions and credential file information.
-* [secrets.tf](./secrets.tf): an Azure key vault, necessary role assignments, and storage account secrets
+* [secrets.tf](./secrets.tf): an Azure Key Vault, necessary role assignments, storage account secrets, and Kasten DR secrets (passphrase, URL, key, and source).
 * [vnet.tf](./vnet.tf): A new virtual network, subnet, and network security groups to allow access via authorized networks.
 
 Please see the [main readme](../../README.md) for information on how to deploy.
 
 ## Credentials
 
-There are two main credentials which are required:
+Two credentials are required:
 
 * `azr_creds`: this code makes use of [managed service identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/managed_service_identity) for authentication (run `az login` in your terminal), however a few IDs are required to be provided. This variable should point to a local JSON file with the following format:
     ```text
@@ -36,11 +36,15 @@ There are two main credentials which are required:
 
 ### GitHub Settings
 
-All of these variables *must* be updated to match your GitHub owner and repository information.
+The `github_owner`, `github_repo`, and `github_repo_url` variables must be updated to match your GitHub repository.
 
 ### Azure Settings
 
-All of these variables *must* be updated to match your GCP service accounts, user, and project information.
+All of these variables *must* be updated to match your Azure region and credential file location.
+
+### ArgoCD / Deployed Apps Settings
+
+Set `argocd_deployment = true` to enable ArgoCD deployment and GitOps file commits. When disabled, only core infrastructure (AKS, VNet, Blob Storage, Key Vault) is deployed.
 
 ### Authorized Networks
 

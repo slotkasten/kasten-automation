@@ -2,7 +2,7 @@
 
 This Terraform code deploys:
 
-* [argocd.tf](./argocd.tf): if `var.argocd_deployment` is set to `true`, ArgoCD is deployed via the [Terraform Helm Provider](https://registry.terraform.io/providers/hashicorp/helm/latest/docs).
+* [argocd.tf](./argocd.tf): if `var.argocd_deployment` is set to `true`, ArgoCD is deployed via the [Terraform Helm Provider](https://registry.terraform.io/providers/hashicorp/helm/latest/docs). Also contains Google Secret Manager secrets (K10 service account credentials, GCP project) and a Kubernetes secret for ESO.
 * [gcs.tf](./gcs.tf): a Google Cloud Storage bucket which is used for application backups via Kasten.
 * [github.tf](./github.tf): if `var.argocd_deployment` is set to `true`, dynamic ArgoCD application and addon YAML specification files are created which are then committed to git using the [Terraform GitHub Provider](https://registry.terraform.io/providers/integrations/github/latest).
 * [gke.tf](./gke.tf): a **zonal** GKE cluster, with most other options configurable via variables.
@@ -13,7 +13,7 @@ Please see the [main readme](../../README.md) for information on how to deploy.
 
 ## Credentials
 
-There are three main credentials which are required:
+Three credentials are required:
 
 * `github_repo_token`: a local file which contains a [fine-grained token](https://github.blog/security/application-security/introducing-fine-grained-personal-access-tokens-for-github/) for your GitHub account:
   * Optionally (but recommended) constrained to your `kasten-automation` repository
@@ -36,11 +36,15 @@ There are three main credentials which are required:
 
 ### GitHub Settings
 
-All of these variables *must* be updated to match your GitHub owner and repository information.
+The `github_owner`, `github_repo`, and `github_repo_url` variables must be updated to match your GitHub repository.
 
 ### GCP Settings
 
 All of these variables *must* be updated to match your GCP service accounts, user, and project information.
+
+### ArgoCD / Deployed Apps Settings
+
+Set `argocd_deployment = true` to enable ArgoCD deployment and GitOps file commits. When disabled, only core infrastructure (GKE, VPC, GCS, Secret Manager) is deployed.
 
 ### Authorized Networks
 
