@@ -1,7 +1,8 @@
 # Kasten Automation
 
-This repository contains Terraform code which creates hyperscaler Kubernetes-as-a-Service offerings (AWS will be added in the future):
+This repository contains Terraform code which creates hyperscaler Kubernetes-as-a-Service offerings:
 
+* [Amazon Elastic Kubernetes Service (EKS)](./aws/k8s-tf)
 * [Azure Kubernetes Service (AKS)](./azure/k8s-tf)
 * [Google Kubernetes Engine (GKE)](./gcp/k8s-tf)
 

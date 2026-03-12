@@ -1,0 +1,20 @@
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Profile
+metadata:
+  name: ${creator}-${workspace}-aws-location
+  namespace: kasten-io
+spec:
+  locationSpec:
+    credential:
+      secretType: AwsAccessKey
+      secret:
+        apiVersion: v1
+        kind: Secret
+        name: k10-aws-credential
+        namespace: kasten-io
+    objectStore:
+      name: ${bucket}
+      objectStoreType: S3
+      region: ${region}
+    type: ObjectStore
+  type: Location

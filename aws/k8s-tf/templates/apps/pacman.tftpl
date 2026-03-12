@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+  name: pacman
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: pacman
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - repoURL: https://michaelhaigh.github.io/pacman/
+      targetRevision: ${pacman_version}
+      chart: pacman
+      helm:
+        releaseName: pacman
+        valuesObject:
+          service:
+            type: LoadBalancer
+    - repoURL: ${thisRepoURL}
+      targetRevision: ${targetRevision}
+      path: aws/argocd/addons/pacman
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      name: pacman-mongodb
+      namespace: pacman
+      jsonPointers:
+        - /data
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true

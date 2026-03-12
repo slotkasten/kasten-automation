@@ -1,0 +1,35 @@
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Policy
+metadata:
+  name: pacman-backup
+  namespace: kasten-io
+spec:
+  frequency: "@hourly"
+  actions:
+    - action: backup
+    - action: export
+      exportParameters:
+        frequency: "@hourly"
+        profile:
+          name: ${creator}-${workspace}-aws-location
+          namespace: kasten-io
+        exportData:
+          enabled: true
+      retention:
+        hourly: 24
+        daily: 7
+        weekly: 4
+        monthly: 12
+        yearly: 7
+  retention:
+    hourly: 24
+    daily: 7
+    weekly: 4
+    monthly: 12
+    yearly: 7
+  selector:
+    matchExpressions:
+      - key: k10.kasten.io/appNamespace
+        operator: In
+        values:
+          - pacman

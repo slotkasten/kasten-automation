@@ -1,0 +1,16 @@
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Profile
+metadata:
+  name: ${creator}-${workspace}-aws-infra
+  namespace: kasten-io
+spec:
+  infra:
+    type: AWS
+    credential:
+      secretType: AwsAccessKey
+      secret:
+        apiVersion: v1
+        kind: Secret
+        name: k10-aws-credential
+        namespace: kasten-io
+  type: Infra
