@@ -107,6 +107,25 @@ resource "aws_secretsmanager_secret_version" "kasten_secret_access_key" {
   secret_string = aws_iam_access_key.eks_kasten.secret
 }
 
+# Cloudflare API token (for cert-manager DNS-01 validation and ExternalDNS)
+resource "aws_secretsmanager_secret" "cloudflare_api_token" {
+  count                   = (var.deployment.cert_manager) ? 1 : 0
+  name                    = "${var.creator_tag}-${terraform.workspace}-cloudflare-api-token"
+  recovery_window_in_days = 0
+
+  tags = {
+    Env     = "${var.creator_tag}-${terraform.workspace}"
+    Name    = "${var.creator_tag}-${terraform.workspace}-cloudflare-api-token"
+    Creator = "${var.creator_tag}"
+  }
+}
+
+resource "aws_secretsmanager_secret_version" "cloudflare_api_token" {
+  count         = (var.deployment.cert_manager) ? 1 : 0
+  secret_id     = aws_secretsmanager_secret.cloudflare_api_token[0].id
+  secret_string = trimspace(file(var.cloudflare_api_token))
+}
+
 # ESO IAM Role (IRSA) for reading from Secrets Manager
 resource "aws_iam_role" "eks_eso" {
   name = "${var.creator_tag}-${terraform.workspace}-eso-role"
@@ -150,14 +169,14 @@ resource "aws_iam_policy" "eks_eso" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        "Resource" : [
+        "Resource" : concat([
           aws_secretsmanager_secret.s3_bucket_name.arn,
           aws_secretsmanager_secret.s3_bucket_region.arn,
           aws_secretsmanager_secret.kasten_dr_passphrase.arn,
           aws_secretsmanager_secret.kasten_dr_source.arn,
           aws_secretsmanager_secret.kasten_access_key_id.arn,
           aws_secretsmanager_secret.kasten_secret_access_key.arn
-        ]
+        ], var.deployment.cert_manager ? [aws_secretsmanager_secret.cloudflare_api_token[0].arn] : [])
       },
       {
         "Effect" : "Allow",

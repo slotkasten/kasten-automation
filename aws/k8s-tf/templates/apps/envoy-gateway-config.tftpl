@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "-8"
+  name: envoy-gateway-config
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: envoy-gateway-system
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: ${thisRepoURL}
+    targetRevision: ${targetRevision}
+    path: aws/argocd/addons/envoy-gateway-config
+  ignoreDifferences:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      jqPathExpressions:
+        - .spec.parentRefs[].group
+        - .spec.parentRefs[].kind
+        - .spec.rules[].backendRefs[].group
+        - .spec.rules[].backendRefs[].kind
+        - .spec.rules[].backendRefs[].weight
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      jqPathExpressions:
+        - .spec.listeners[].tls.certificateRefs[].group
+        - .spec.listeners[].tls.certificateRefs[].kind
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

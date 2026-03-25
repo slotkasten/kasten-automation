@@ -88,9 +88,21 @@ variable "authorized_networks" {
 }
 
 # ArgoCD / Deployed Apps Settings
-variable "argocd_deployment" {
-  type        = bool
-  description = "Whether to deploy Argo CD or not"
+variable "deployment" {
+  type = object({
+    argocd       = bool
+    cert_manager = bool
+  })
+  description = "Controls which optional components are deployed. cert_manager requires argocd to be true."
+  default = {
+    argocd       = true
+    cert_manager = false
+  }
+
+  validation {
+    condition     = !(var.deployment.cert_manager && !var.deployment.argocd)
+    error_message = "cert_manager requires argocd to be true"
+  }
 }
 variable "argocd_version" {
   type        = string
@@ -111,5 +123,44 @@ variable "pacman_version" {
 variable "snapshot_controller_version" {
   type        = string
   description = "The Piraeus snapshot-controller Helm chart version to install"
+}
+variable "email" {
+  type        = string
+  description = "Email address for Kasten EULA acceptance and Let's Encrypt registration"
+  default     = ""
+}
+variable "kasten_eula_accept" {
+  type        = bool
+  description = "Accept the Kasten EULA (https://www.veeam.com/eula.html)"
+  default     = false
+}
+
+# cert-manager / Gateway API Settings
+variable "cert_manager_version" {
+  type        = string
+  description = "The cert-manager Helm chart version to install"
+}
+variable "envoy_gateway_version" {
+  type        = string
+  description = "The Envoy Gateway Helm chart version to install"
+}
+variable "external_dns_version" {
+  type        = string
+  description = "The ExternalDNS Helm chart version to install"
+}
+variable "cloudflare_api_token" {
+  type        = string
+  description = "The file path on the local machine containing a Cloudflare API token with Zone:DNS:Edit and Zone:Zone:Read permissions"
+  default     = ""
+}
+variable "domain_name" {
+  type        = string
+  description = "The base domain name for TLS-enabled subdomains (e.g. example.com)"
+  default     = ""
+}
+variable "letsencrypt_staging" {
+  type        = bool
+  description = "Use the Let's Encrypt staging server (recommended for testing to avoid rate limits)"
+  default     = true
 }
 

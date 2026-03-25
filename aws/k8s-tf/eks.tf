@@ -14,8 +14,9 @@ resource "null_resource" "k8s_cleanup" {
     when    = destroy
     command = <<-EOT
       aws eks update-kubeconfig --name ${self.triggers.cluster_name} --region ${self.triggers.region} &&
+      kubectl delete gateway --all-namespaces --all --ignore-not-found &&
       kubectl delete svc --all-namespaces --field-selector spec.type=LoadBalancer &&
-      sleep 60 || true
+      sleep 90 || true
     EOT
   }
 }

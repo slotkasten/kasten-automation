@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: ${letsencrypt_staging ? "letsencrypt-staging" : "letsencrypt-prod"}
+spec:
+  acme:
+    server: ${letsencrypt_staging ? "https://acme-staging-v02.api.letsencrypt.org/directory" : "https://acme-v02.api.letsencrypt.org/directory"}
+    email: ${email}
+    privateKeySecretRef:
+      name: ${letsencrypt_staging ? "letsencrypt-staging-account-key" : "letsencrypt-prod-account-key"}
+    solvers:
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              name: cloudflare-api-token
+              key: api-token

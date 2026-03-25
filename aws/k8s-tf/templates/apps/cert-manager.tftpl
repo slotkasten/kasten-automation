@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+  name: cert-manager
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: cert-manager
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://charts.jetstack.io
+    targetRevision: ${cert_manager_version}
+    chart: cert-manager
+    helm:
+      releaseName: cert-manager
+      valuesObject:
+        crds:
+          enabled: true
+        config:
+          apiVersion: controller.config.cert-manager.io/v1alpha1
+          enableGatewayAPI: true
+          certificateRequestMinimumBackoffDuration: 5m
+  ignoreDifferences:
+    - group: admissionregistration.k8s.io
+      kind: ValidatingWebhookConfiguration
+      name: cert-manager-webhook
+      jsonPointers:
+        - /webhooks/0/clientConfig/caBundle
+      jqPathExpressions:
+        - .webhooks[].namespaceSelector
+        - .webhooks[].objectSelector
+        - .webhooks[].clientConfig.service.port
+        - .webhooks[].rules[].scope
+    - group: admissionregistration.k8s.io
+      kind: MutatingWebhookConfiguration
+      name: cert-manager-webhook
+      jsonPointers:
+        - /webhooks/0/clientConfig/caBundle
+      jqPathExpressions:
+        - .webhooks[].namespaceSelector
+        - .webhooks[].objectSelector
+        - .webhooks[].clientConfig.service.port
+        - .webhooks[].rules[].scope
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    automated:
+      prune: true
+      selfHeal: true

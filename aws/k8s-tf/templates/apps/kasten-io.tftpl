@@ -22,15 +22,28 @@ spec:
           auth:
             tokenAuth:
               enabled: true
+          eula:
+            accept: ${kasten_eula_accept}
+            company: ${email_domain}
+            email: ${email}
           excludedApps:
             - kube-node-lease
             - kube-public
             - kube-system
           externalGateway:
-            create: true
+            create: ${cert_manager_deployment ? "false" : "true"}
     - repoURL: ${thisRepoURL}
       targetRevision: ${targetRevision}
       path: aws/argocd/addons/kasten-io
+  ignoreDifferences:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      jqPathExpressions:
+        - .spec.parentRefs[].group
+        - .spec.parentRefs[].kind
+        - .spec.rules[].backendRefs[].group
+        - .spec.rules[].backendRefs[].kind
+        - .spec.rules[].backendRefs[].weight
   syncPolicy:
     syncOptions:
       - CreateNamespace=true

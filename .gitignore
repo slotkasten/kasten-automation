@@ -18,6 +18,10 @@ override.tf.json
 *_override.tf
 *_override.tf.json
 
+# Terraform variable files (may contain sensitive values)
+*.tfvars
+!default.tfvars
+
 # Terraform CLI configuration files
 .terraformrc
 terraform.rc

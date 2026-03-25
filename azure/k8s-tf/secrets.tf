@@ -96,3 +96,12 @@ resource "azurerm_key_vault_secret" "kasten_dr_source" {
   key_vault_id    = azurerm_key_vault.kasten_key_vault.id
   expiration_date = timeadd(timestamp(), "8760h")
 }
+
+resource "azurerm_key_vault_secret" "cloudflare_api_token" {
+  count           = var.deployment.cert_manager ? 1 : 0
+  depends_on      = [azurerm_role_assignment.user_vault_assignment]
+  name            = "cloudflare-api-token"
+  value           = trimspace(file(var.cloudflare_api_token))
+  key_vault_id    = azurerm_key_vault.kasten_key_vault.id
+  expiration_date = timeadd(timestamp(), "8760h")
+}
