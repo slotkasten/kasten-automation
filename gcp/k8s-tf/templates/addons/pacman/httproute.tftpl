@@ -9,7 +9,7 @@ spec:
       namespace: envoy-gateway-system
       sectionName: https-wildcard
   hostnames:
-    - pacman.${workspace}.${domain}
+    - pacman.${creator}-${workspace}.${domain}
   rules:
     - backendRefs:
         - name: pacman

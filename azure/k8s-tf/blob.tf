@@ -1,5 +1,5 @@
 resource "azurerm_storage_account" "account" {
-  name                     = "${var.creator_tag}${terraform.workspace}"
+  name                     = replace("${var.creator_tag}${terraform.workspace}", "-", "")
   resource_group_name      = azurerm_resource_group.aks_resource_group.name
   location                 = var.azr_region
   account_tier             = "Standard"

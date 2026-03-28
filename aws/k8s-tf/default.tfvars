@@ -60,9 +60,9 @@ deployment = {
 }
 
 # ArgoCD / Deployed Apps Settings
-argocd_version              = "9.1.6"             # Only relevant if deployment.argocd is true
+argocd_version              = "9.4.17"             # Only relevant if deployment.argocd is true
 eso_version                 = "1.1.1"             # Only relevant if deployment.argocd is true
-kasten_version              = "8.5.1"             # Only relevant if deployment.argocd is true
+kasten_version              = "8.5.5"             # Only relevant if deployment.argocd is true
 pacman_version              = "0.1.28"            # Only relevant if deployment.argocd is true
 snapshot_controller_version = "5.0.3"             # Only relevant if deployment.argocd is true
 kasten_eula_accept          = true                # Only relevant if deployment.argocd is true
@@ -73,5 +73,5 @@ cert_manager_version  = "1.20.0"               # Only relevant if deployment.cer
 envoy_gateway_version = "1.7.1"                # Only relevant if deployment.cert_manager is true
 external_dns_version  = "1.20.0"               # Only relevant if deployment.cert_manager is true
 cloudflare_api_token  = "~/.cloudflare/tf-api" # Only relevant if deployment.cert_manager is true
-domain_name           = "haigh.cloud"          # Only relevant if deployment.cert_manager is true
+domain_name           = "k8sbackup.dev"        # Only relevant if deployment.cert_manager is true
 letsencrypt_staging   = false                  # Only relevant if deployment.cert_manager is true

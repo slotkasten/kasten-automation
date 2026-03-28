@@ -9,7 +9,7 @@ spec:
       namespace: envoy-gateway-system
       sectionName: https-wildcard
   hostnames:
-    - argocd.${workspace}.${domain}
+    - argocd.${creator}-${workspace}.${domain}
   rules:
     - backendRefs:
         - name: argocd-server

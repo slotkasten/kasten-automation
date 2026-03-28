@@ -92,6 +92,7 @@ locals {
     thisRepoURL          = var.github_repo_url
     domain_name          = var.domain_name
     workspace            = terraform.workspace
+    creator              = var.creator_tag
   })
   apps-argocd-gateway = templatefile("${path.module}/templates/apps/argocd-gateway.tftpl", {
     targetRevision = terraform.workspace
@@ -116,6 +117,7 @@ locals {
   )
   addons-envoy-gateway-gateway = templatefile(
     "${path.module}/templates/addons/envoy-gateway-config/gateway.tftpl", {
+      creator             = var.creator_tag
       workspace           = terraform.workspace
       domain              = var.domain_name
       letsencrypt_staging = var.letsencrypt_staging
@@ -123,6 +125,7 @@ locals {
   )
   addons-envoy-gateway-http-redirect = templatefile(
     "${path.module}/templates/addons/envoy-gateway-config/http-redirect.tftpl", {
+      creator   = var.creator_tag
       workspace = terraform.workspace
       domain    = var.domain_name
     }
@@ -133,20 +136,26 @@ locals {
       workspace   = terraform.workspace
     }
   )
+  addons-external-dns-predelete-hook = file(
+    "${path.module}/templates/addons/external-dns/predelete-hook.tftpl"
+  )
   addons-argocd-httproute = templatefile(
     "${path.module}/templates/addons/argocd/httproute.tftpl", {
+      creator   = var.creator_tag
       workspace = terraform.workspace
       domain    = var.domain_name
     }
   )
   addons-kasten-httproute = templatefile(
     "${path.module}/templates/addons/kasten-io/httproute.tftpl", {
+      creator   = var.creator_tag
       workspace = terraform.workspace
       domain    = var.domain_name
     }
   )
   addons-pacman-httproute = templatefile(
     "${path.module}/templates/addons/pacman/httproute.tftpl", {
+      creator   = var.creator_tag
       workspace = terraform.workspace
       domain    = var.domain_name
     }
@@ -392,6 +401,15 @@ resource "github_repository_file" "addons_externaldns_cloudflare_secret" {
   file                = "aws/argocd/addons/external-dns/cloudflare-secret.yaml"
   content             = format("# Auto-generated file, do not edit directly\n%s", local.addons-external-dns-cloudflare-secret)
   commit_message      = "automated(${terraform.workspace}): update addons/external-dns/cloudflare-secret.yaml via 'terraform apply/destroy'"
+  overwrite_on_create = true
+}
+resource "github_repository_file" "addons_externaldns_predelete_hook" {
+  count               = (var.deployment.cert_manager) ? 1 : 0
+  repository          = var.github_repo
+  branch              = terraform.workspace
+  file                = "aws/argocd/addons/external-dns/predelete-hook.yaml"
+  content             = format("# Auto-generated file, do not edit directly\n%s", local.addons-external-dns-predelete-hook)
+  commit_message      = "automated(${terraform.workspace}): update addons/external-dns/predelete-hook.yaml via 'terraform apply/destroy'"
   overwrite_on_create = true
 }
 resource "github_repository_file" "addons_argocd_httproute" {

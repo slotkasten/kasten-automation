@@ -9,7 +9,7 @@ spec:
       namespace: envoy-gateway-system
       sectionName: https-wildcard
   hostnames:
-    - kasten.${workspace}.${domain}
+    - kasten.${creator}-${workspace}.${domain}
   rules:
     - matches:
         - path:

@@ -9,7 +9,7 @@ spec:
       namespace: envoy-gateway-system
       sectionName: http
   hostnames:
-    - "*.${workspace}.${domain}"
+    - "*.${creator}-${workspace}.${domain}"
   rules:
     - filters:
         - type: RequestRedirect

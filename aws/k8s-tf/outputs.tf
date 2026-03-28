@@ -48,7 +48,7 @@ output "_2_argocd_apply_app_of_apps_cmd" {
 
 output "_3_argocd_endpoint" {
   description = "The URL to access the ArgoCD UI"
-  value       = var.deployment.argocd ? (var.deployment.cert_manager ? "https://argocd.${terraform.workspace}.${var.domain_name} # once Gateway is up" : "https://${data.kubernetes_service.argocd_server[0].status.0.load_balancer.0.ingress[0].hostname}") : "ArgoCD not deployed"
+  value       = var.deployment.argocd ? (var.deployment.cert_manager ? "https://argocd.${var.creator_tag}-${terraform.workspace}.${var.domain_name} # once Gateway is up" : "https://${data.kubernetes_service.argocd_server[0].status.0.load_balancer.0.ingress[0].hostname}") : "ArgoCD not deployed"
 }
 
 output "_4_argocd_admin_secret_copy_cmd" {
@@ -58,7 +58,7 @@ output "_4_argocd_admin_secret_copy_cmd" {
 
 output "_5_kasten_dashboard_cmd" {
   description = "The command to open the Kasten K10 dashboard"
-  value       = var.deployment.argocd ? (var.deployment.cert_manager ? "open https://kasten.${terraform.workspace}.${var.domain_name}/k10/" : "open http://`kubectl -n kasten-io get svc gateway-ext -ojsonpath='{.status.loadBalancer.ingress[0].hostname}'`/k10/") : "ArgoCD not deployed"
+  value       = var.deployment.argocd ? (var.deployment.cert_manager ? "open https://kasten.${var.creator_tag}-${terraform.workspace}.${var.domain_name}/k10/" : "open http://`kubectl -n kasten-io get svc gateway-ext -ojsonpath='{.status.loadBalancer.ingress[0].hostname}'`/k10/") : "ArgoCD not deployed"
 }
 
 output "_6_kasten_token_cmd" {
@@ -68,7 +68,7 @@ output "_6_kasten_token_cmd" {
 
 output "_7_pacman_url" {
   description = "The URL to access the Pacman app"
-  value       = (var.deployment.argocd && var.deployment.cert_manager) ? "https://pacman.${terraform.workspace}.${var.domain_name}" : "cert-manager not deployed"
+  value       = (var.deployment.argocd && var.deployment.cert_manager) ? "https://pacman.${var.creator_tag}-${terraform.workspace}.${var.domain_name}" : "cert-manager not deployed"
 }
 output "argocd_admin_secret" {
   description = "The ArgoCD initial admin secret"

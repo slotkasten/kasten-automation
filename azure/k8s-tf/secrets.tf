@@ -1,5 +1,15 @@
+resource "random_id" "kv_suffix" {
+  byte_length = 3
+}
+
+locals {
+  # Azure Key Vault names: 3-24 chars, alphanumerics and hyphens only
+  kv_base = "${var.creator_tag}-${terraform.workspace}-kv"
+  kv_name = "${substr(local.kv_base, 0, min(length(local.kv_base), 17))}-${random_id.kv_suffix.hex}"
+}
+
 resource "azurerm_key_vault" "kasten_key_vault" {
-  name                        = "${var.creator_tag}-${terraform.workspace}-kv"
+  name                        = local.kv_name
   location                    = var.azr_region
   resource_group_name         = azurerm_resource_group.aks_resource_group.name
   enabled_for_disk_encryption = true

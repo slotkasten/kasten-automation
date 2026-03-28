@@ -60,6 +60,12 @@ flowchart LR
     end
 ```
 
+## Screenshots
+
+| ArgoCD | Kasten K10 | Pacman |
+|---|---|---|
+| ![ArgoCD](images/argocd.png) | ![Kasten K10](images/kasten.png) | ![Pacman](images/pacman.png) |
+
 ## Prerequisites
 
 The following tools must be installed locally:
@@ -130,7 +136,7 @@ Optionally edit the `<workspace-name>.tfvars` file, and then deploy the new envi
 terraform apply -var-file="$(terraform workspace show).tfvars" && git pull
 ```
 
-It is also recommended to commit your tfvars file to git to adhere to GitOps principles (assuming no secrets are contained directly within the file).
+Note that `*.tfvars` files are gitignored by default (except `default.tfvars`). To commit a workspace-specific tfvars file, use `git add -f <workspace>.tfvars`. This is recommended to adhere to GitOps principles, assuming no secrets are contained directly within the file.
 
 To switch to a different workspace, run:
 

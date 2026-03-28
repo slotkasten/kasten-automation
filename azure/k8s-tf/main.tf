@@ -39,7 +39,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "aks_resource_group" {
-  name     = "aks-${terraform.workspace}-rg"
+  name     = "${var.creator_tag}-${terraform.workspace}-rg"
   location = var.azr_region
 
   tags = {

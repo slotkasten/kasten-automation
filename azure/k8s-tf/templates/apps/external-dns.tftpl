@@ -2,11 +2,13 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: "-8"
+    argocd.argoproj.io/sync-wave: "-9"
   name: external-dns
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
+  - pre-delete-finalizer.argocd.argoproj.io
+  - pre-delete-finalizer.argocd.argoproj.io/cleanup
 spec:
   destination:
     namespace: external-dns
@@ -26,7 +28,8 @@ spec:
           domainFilters:
             - ${domain_name}
           policy: sync
-          txtOwnerId: ${workspace}
+          triggerLoopOnEvent: true
+          txtOwnerId: ${creator}-${workspace}
           env:
             - name: CF_API_TOKEN
               valueFrom:

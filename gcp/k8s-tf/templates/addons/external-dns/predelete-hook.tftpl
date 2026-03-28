@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: external-dns-predelete
+  namespace: external-dns
+  annotations:
+    argocd.argoproj.io/hook: PreDelete
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  template:
+    spec:
+      containers:
+      - name: sleep
+        image: busybox
+        command: ["sleep", "60"]
+      restartPolicy: Never
+  backoffLimit: 0

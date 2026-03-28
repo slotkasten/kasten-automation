@@ -1,26 +1,3 @@
-# Cleanup Kubernetes LoadBalancer services before destroying VPC infrastructure
-resource "null_resource" "k8s_cleanup" {
-  triggers = {
-    cluster_name = aws_eks_cluster.eks_cluster.name
-    region       = var.aws_region
-  }
-
-  depends_on = [
-    aws_eks_cluster.eks_cluster,
-    aws_eks_node_group.eks_ng
-  ]
-
-  provisioner "local-exec" {
-    when    = destroy
-    command = <<-EOT
-      aws eks update-kubeconfig --name ${self.triggers.cluster_name} --region ${self.triggers.region} &&
-      kubectl delete gateway --all-namespaces --all --ignore-not-found &&
-      kubectl delete svc --all-namespaces --field-selector spec.type=LoadBalancer &&
-      sleep 90 || true
-    EOT
-  }
-}
-
 # EKS Cluster
 resource "aws_eks_cluster" "eks_cluster" {
   name     = "${var.creator_tag}-${terraform.workspace}-cluster"
@@ -228,4 +205,66 @@ resource "aws_iam_openid_connect_provider" "cluster" {
   client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = [data.external.thumbprint.result.thumbprint]
   url             = aws_eks_cluster.eks_cluster.identity.0.oidc.0.issuer
+}
+
+# Cleanup ArgoCD applications before destroying infrastructure.
+# Deleting app-of-apps triggers a cascade delete (via the resources-finalizer
+# baked into the template) of all child apps in reverse sync-wave order, which
+# in turn delete their managed resources. This ensures ExternalDNS cleans up
+# Cloudflare DNS records as HTTPRoutes are removed, and cloud load balancers
+# are deprovisioned.
+resource "null_resource" "k8s_cleanup" {
+  count = var.deployment.argocd ? 1 : 0
+
+  triggers = {
+    cluster_name = aws_eks_cluster.eks_cluster.name
+    region       = var.aws_region
+  }
+
+  depends_on = [
+    aws_eks_addon.addons,
+    aws_nat_gateway.eks_nat_gw,
+    aws_route.eks_route,
+    github_repository_file.addons_argocd_httproute,
+    github_repository_file.addons_certmanager_cloudflare_secret,
+    github_repository_file.addons_certmanager_cluster_issuer,
+    github_repository_file.addons_envoygateway_gateway,
+    github_repository_file.addons_envoygateway_gatewayclass,
+    github_repository_file.addons_envoygateway_http_redirect,
+    github_repository_file.addons_externaldns_cloudflare_secret,
+    github_repository_file.addons_externaldns_predelete_hook,
+    github_repository_file.addons_externalsecrets_clustersecretstore,
+    github_repository_file.addons_kastendr_policy,
+    github_repository_file.addons_kastendr_secret,
+    github_repository_file.addons_kastenio_httproute,
+    github_repository_file.addons_kastenprofiles_aws_credential,
+    github_repository_file.addons_kastenprofiles_infrastructure,
+    github_repository_file.addons_kastenprofiles_location,
+    github_repository_file.addons_pacman_backup,
+    github_repository_file.addons_pacman_httproute,
+    github_repository_file.app_of_apps,
+    github_repository_file.apps_argocd_gateway,
+    github_repository_file.apps_cert_manager,
+    github_repository_file.apps_cert_manager_config,
+    github_repository_file.apps_envoy_gateway,
+    github_repository_file.apps_envoy_gateway_config,
+    github_repository_file.apps_external_dns,
+    github_repository_file.apps_external_secrets,
+    github_repository_file.apps_kasten_dr,
+    github_repository_file.apps_kasten_io,
+    github_repository_file.apps_kasten_profiles,
+    github_repository_file.apps_pacman,
+    github_repository_file.apps_snapshot_controller,
+    kubernetes_config_map_v1_data.argocd_cm,
+    kubernetes_storage_class_v1.ebs_csi,
+    time_sleep.wait_for_argocd,
+  ]
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = <<-EOT
+      aws eks update-kubeconfig --name ${self.triggers.cluster_name} --region ${self.triggers.region} &&
+      kubectl delete application -n argocd app-of-apps --ignore-not-found || true
+    EOT
+  }
 }
