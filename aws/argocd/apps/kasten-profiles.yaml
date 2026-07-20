@@ -1,0 +1,23 @@
+# Auto-generated file, do not edit directly
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "-3"
+  name: kasten-profiles
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: kasten-io
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/slotkasten/kasten-automation
+    targetRevision: default
+    path: aws/argocd/addons/kasten-profiles
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
