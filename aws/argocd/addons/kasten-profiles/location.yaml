@@ -1,0 +1,21 @@
+# Auto-generated file, do not edit directly
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Profile
+metadata:
+  name: mslotten-default-aws-location
+  namespace: kasten-io
+spec:
+  locationSpec:
+    credential:
+      secretType: AwsAccessKey
+      secret:
+        apiVersion: v1
+        kind: Secret
+        name: k10-aws-credential
+        namespace: kasten-io
+    objectStore:
+      name: mslotten-default-k10
+      objectStoreType: S3
+      region: us-east-2
+    type: ObjectStore
+  type: Location
