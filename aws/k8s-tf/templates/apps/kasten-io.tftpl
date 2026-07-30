@@ -20,6 +20,7 @@ spec:
         releaseName: k10
         valuesObject:
           auth:
+            secureCookies: ${cert_manager_deployment ? "true" : "false"}
             tokenAuth:
               enabled: true
           eula:
