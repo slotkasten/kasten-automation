@@ -41,6 +41,12 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     pod_cidr       = var.aks_pods_cidr
     dns_service_ip = var.aks_services_dns_ip
   }
+
+  lifecycle {
+    ignore_changes = [
+      oidc_issuer_enabled,
+    ]
+  }
 }
 
 # Cleanup ArgoCD applications before destroying infrastructure.

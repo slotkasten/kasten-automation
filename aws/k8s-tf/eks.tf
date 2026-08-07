@@ -70,7 +70,7 @@ resource "aws_eks_node_group" "eks_ng" {
     min_size     = var.eks_node_min
   }
 
-  ami_type       = "AL2_x86_64"
+  ami_type       = "AL2023_x86_64_STANDARD"
   capacity_type  = "ON_DEMAND"
   instance_types = [var.eks_instance_type]
 
