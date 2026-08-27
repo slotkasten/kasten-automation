@@ -1,0 +1,20 @@
+# Auto-generated file, do not edit directly
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Profile
+metadata:
+  name: mslotten-kasten90az-azure-location
+  namespace: kasten-io
+spec:
+  locationSpec:
+    credential:
+      secret:
+        apiVersion: v1
+        kind: secret
+        name: k10secret-mslotten-kasten90az-azurekv
+        namespace: kasten-io
+      secretType: AzStorageAccount
+    objectStore:
+      name: mslotten-kasten90az-container
+      objectStoreType: AZ
+    type: ObjectStore
+  type: Location
