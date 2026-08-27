@@ -1,0 +1,15 @@
+# Auto-generated file, do not edit directly
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Profile
+metadata:
+  name: mslotten-kasten90az-azure-infra
+  namespace: kasten-io
+spec:
+  infra:
+    type: Azure
+    azure:
+      subscriptionID: "899abe23-34ce-4e4b-acdd-fb464f52f5de"
+      resourceGroup: mslotten-kasten90az-rg
+      cloudEnv: AzurePublicCloud
+      useDefaultMSI: true
+  type: Infra
