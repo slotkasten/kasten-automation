@@ -12,7 +12,7 @@ spec:
       exportParameters:
         frequency: "@hourly"
         profile:
-          name: mslotten-default-aws-location
+          name: mslotten-kasten90eks-aws-location
           namespace: kasten-io
         exportData:
           enabled: true
