@@ -10,14 +10,14 @@ spec:
     backupParameters:
       filters: {}
       profile:
-        name: mslotten-default-aws-location
+        name: mslotten-kasten90eks-aws-location
         namespace: kasten-io
   - action: export
     exportParameters:
       exportData:
         enabled: true
       profile:
-        name: mslotten-default-aws-location
+        name: mslotten-kasten90eks-aws-location
         namespace: kasten-io
   frequency: '@daily'
   kdrSnapshotConfiguration:
