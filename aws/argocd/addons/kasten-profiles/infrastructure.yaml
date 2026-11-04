@@ -2,7 +2,7 @@
 apiVersion: config.kio.kasten.io/v1alpha1
 kind: Profile
 metadata:
-  name: mslotten-default-aws-infra
+  name: mslotten-kasten90eks-aws-infra
   namespace: kasten-io
 spec:
   infra:
