@@ -15,7 +15,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/slotkasten/kasten-automation
-    targetRevision: default
+    targetRevision: kasten90eks
     path: aws/argocd/addons/kasten-profiles
   syncPolicy:
     automated:
