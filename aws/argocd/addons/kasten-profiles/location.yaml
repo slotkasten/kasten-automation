@@ -2,7 +2,7 @@
 apiVersion: config.kio.kasten.io/v1alpha1
 kind: Profile
 metadata:
-  name: mslotten-default-aws-location
+  name: mslotten-kasten90eks-aws-location
   namespace: kasten-io
 spec:
   locationSpec:
@@ -14,7 +14,7 @@ spec:
         name: k10-aws-credential
         namespace: kasten-io
     objectStore:
-      name: mslotten-default-k10
+      name: mslotten-kasten90eks-k10
       objectStoreType: S3
       region: us-east-2
     type: ObjectStore
