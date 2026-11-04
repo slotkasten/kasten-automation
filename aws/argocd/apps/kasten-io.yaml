@@ -15,12 +15,13 @@ spec:
   project: default
   sources:
     - repoURL: https://charts.kasten.io/
-      targetRevision: 9.0.0
+      targetRevision: 9.0.10
       chart: k10
       helm:
         releaseName: k10
         valuesObject:
           auth:
+            secureCookies: false
             tokenAuth:
               enabled: true
           eula:
@@ -34,7 +35,7 @@ spec:
           externalGateway:
             create: true
     - repoURL: https://github.com/slotkasten/kasten-automation
-      targetRevision: default
+      targetRevision: kasten90eks
       path: aws/argocd/addons/kasten-io
   ignoreDifferences:
     - group: gateway.networking.k8s.io
