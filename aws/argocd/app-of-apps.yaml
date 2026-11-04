@@ -13,7 +13,7 @@ spec:
   source:
     path: aws/argocd/apps
     repoURL: https://github.com/slotkasten/kasten-automation
-    targetRevision: default
+    targetRevision: kasten90eks
     directory:
       recurse: true
   sources: []
