@@ -23,7 +23,7 @@ spec:
           service:
             type: LoadBalancer
     - repoURL: https://github.com/slotkasten/kasten-automation
-      targetRevision: default
+      targetRevision: kasten90eks
       path: aws/argocd/addons/pacman
   ignoreDifferences:
     - group: ""
